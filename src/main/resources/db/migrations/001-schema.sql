@@ -1,0 +1,3 @@
+DROP SCHEMA IF EXISTS fda_demo CASCADE;
+CREATE SCHEMA fda_demo;
+

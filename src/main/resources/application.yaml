@@ -1,0 +1,142 @@
+server:
+  port: ${SERVER_PORT:8001}
+
+logbook:
+  include:
+    - /v1/api/**
+    - /actuator/**
+  exclude:
+    - /actuator/health
+    - /api/admin/**
+  filter.enabled: true
+  secure-filter.enabled: true
+  format.style: http
+  strategy: body-only-if-status-at-least
+  minimum-status: 200
+  obfuscate:
+    headers:
+      - Authorization
+      - X-Secret
+    parameters:
+      - access_token
+      - password
+    write:
+      chunk-size: 1000
+
+spring:
+  profiles:
+    active: docker
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
+  security:
+    user:
+      name: user
+      passowrd: user
+  liquibase:
+    change-log: classpath:/db/liquibase-changeLog.yaml
+    database-change-log-table: fda_demo_change_log
+    database-change-log-lock-table: fda_demo_change_log_lock
+
+  jpa:
+    properties:
+      hibernate:
+        show_sql: false
+        use_sql_comments: false
+        format_sql: true
+
+logging:
+  level:
+    root: ${LOG_LEVEL:INFO}
+    org:
+      hibernate:
+        type: ${LOG_LEVEL:INFO}
+      zalando:
+        logbook: TRACE
+---
+
+spring:
+  profiles: docker
+  datasource:
+    url: ${JDBC_URL:jdbc:postgresql://database:5432/fda-demo}
+    username: "fdauser"
+    password: "fdauser"
+    driver-class-name: "org.postgresql.Driver"
+    hikari:
+      connection-timeout: 60000
+      maximum-pool-size: 200
+      minimum-idle: 30
+      idle-timeout: 3000
+      pool-name: "HikariCP"
+      url: ${JDBC_URL:jdbc:postgresql://database:5432/fda-demo}
+      username: "fdauser"
+      password: "fdauser"
+      driver-class-name: "org.postgresql.Driver"
+    type: "com.zaxxer.hikari.HikariDataSource"
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+
+---
+
+spring:
+  profiles: local
+
+  ###
+  # HikariCP Properties
+  ###
+  datasource:
+    url: ${JDBC_URL:jdbc:postgresql://localhost:5433/fda-demo}
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      connection-timeout: 60000
+      maximum-pool-size: 200
+      minimum-idle: 30
+      idle-timeout: 3000
+      poolName: HikariCP
+      jdbcUrl: ${JDBC_URL:jdbc:postgresql://localhost:5433/fda-demo}
+      username: fdauser
+      password: fdauser
+      driverClassName: org.postgresql.Driver
+    initialization-mode: always
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+---
+
+server:
+  accessIpAddress: localhost,127.0.0.1
+  friendlyName: Test Server
+
+spring:
+  profiles: test
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${DB_URL:}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+  liquibase:
+    contexts: test
+
+logging:
+  level:
+    liquibase: INFO
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    generate-ddl: false
+
+    properties:
+      hibernate:
+        default-schema: public
+  test:
+    database:
+      replace: none
