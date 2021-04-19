@@ -2,7 +2,7 @@
 
 ### Requirements :
 
-1. OpenJDK-16
+1. OpenJDK-15
 2. Maven 3
 3. Postgres database instance
 
@@ -11,3 +11,6 @@
 
     [optional] Run Spring Boot app with java -jar command :
     java -jar target/fda-demo-0.0.1-SNAPSHOT.jar
+
+#### OpenAPI Documentation could be accessed at
+    http://localhost:8001/swagger-ui.html
