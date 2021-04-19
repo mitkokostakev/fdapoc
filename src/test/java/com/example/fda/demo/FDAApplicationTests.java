@@ -1,6 +1,6 @@
 package com.example.fda.demo;
 
-import com.example.fda.demo.controller.GreetingController;
+import com.example.fda.demo.controller.FDAController;
 import com.example.fda.demo.db.DatabaseIT;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
@@ -15,18 +15,18 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @SpringBootTest(
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-    classes = DemoApplication.class)
+    classes = FDAApplication.class)
 @ActiveProfiles("test")
 @Profile("test")
 @Slf4j
 @RunWith(SpringRunner.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class DemoApplicationTests extends DatabaseIT {
+public class FDAApplicationTests extends DatabaseIT {
 
-  @Autowired private GreetingController greetingController;
+  @Autowired private FDAController fdaController;
 
   @Test
   public void contextLoads() {
-    Assertions.assertThat(greetingController).isNotNull();
+    Assertions.assertThat(fdaController).isNotNull();
   }
 }

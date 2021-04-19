@@ -24,6 +24,10 @@ logbook:
       chunk-size: 1000
 
 spring:
+  # Force colorful console
+  output:
+    ansi:
+      enabled: always
   profiles:
     active: docker
   jackson:
@@ -53,6 +57,19 @@ logging:
         type: ${LOG_LEVEL:INFO}
       zalando:
         logbook: TRACE
+
+services:
+  openfda:
+    api:
+      url: ${OPENFDA_REST_API_URL:https://api.fda.gov/drug/drugsfda.json}
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 30000
+        readTimeout: 30000
+        loggerLevel: FULL
 ---
 
 spring:

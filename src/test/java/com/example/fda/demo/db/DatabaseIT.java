@@ -1,6 +1,6 @@
 package com.example.fda.demo.db;
 
-import com.example.fda.demo.DemoApplication;
+import com.example.fda.demo.FDAApplication;
 import org.junit.ClassRule;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -11,7 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @ActiveProfiles({"test"})
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = DemoApplication.class)
+@ContextConfiguration(classes = FDAApplication.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @TestPropertySource(value = {"classpath:application.yaml"})
 public abstract class DatabaseIT {
