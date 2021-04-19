@@ -30,13 +30,17 @@ public class OpenFDAServiceImpl implements OpenFDAService {
       String manufacturer, String brand, Integer page, Integer pageSize) {
     StringBuilder searchBuilder = new StringBuilder();
     if (!ObjectUtils.isEmpty(manufacturer)) {
-      searchBuilder.append("sponsor_name:" + manufacturer);
+      searchBuilder.append("sponsor_name:\"");
+      searchBuilder.append(manufacturer);
+      searchBuilder.append("\"");
     }
-    //    if(!ObjectUtils.isEmpty(brand)) {
-    //      searchBuilder.append("+AND+products.brand_name:\"" + brand + "\"");
-    //    }
-    //    searchBuilder.append("&limit=" + pageSize);
-    //    searchBuilder.append("&skip=" + (pageSize * (page - 1)));
+    if(!ObjectUtils.isEmpty(brand)) {
+      searchBuilder.append("+AND+products.brand_name:\"");
+      searchBuilder.append(brand);
+      searchBuilder.append("\"");
+    }
+    searchBuilder.append("&limit=" + pageSize);
+    searchBuilder.append("&skip=" + (pageSize * (page - 1)));
     return openFDAClient.findByManufacturerAndBrand(searchBuilder.toString());
   }
 

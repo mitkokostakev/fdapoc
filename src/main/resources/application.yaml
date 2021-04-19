@@ -65,7 +65,8 @@ logging:
           demo:
             integration:
               fda:
-                OpenFDAClient: DEBUG
+                client:
+                  OpenFDAClient: DEBUG
 
 services:
   openfda:
