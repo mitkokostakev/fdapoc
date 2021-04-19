@@ -42,7 +42,8 @@ public class FDAApplicationTests extends DatabaseIT {
     Integer pageSize = 10;
 
     // When
-    ResponseEntity<OpenFDAResponse> openFDAResponseResponseEntity = fdaController.searchSubmittedForApproval(manufacturer, brandName, page, pageSize);
+    ResponseEntity<OpenFDAResponse> openFDAResponseResponseEntity =
+        fdaController.searchSubmittedForApproval(manufacturer, brandName, page, pageSize);
 
     // Then
     Assert.assertNotNull(openFDAResponseResponseEntity);

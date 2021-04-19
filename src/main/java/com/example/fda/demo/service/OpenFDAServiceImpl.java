@@ -29,14 +29,14 @@ public class OpenFDAServiceImpl implements OpenFDAService {
   public ResponseEntity<OpenFDAResponse> findSubmittedForApproval(
       String manufacturer, String brand, Integer page, Integer pageSize) {
     StringBuilder searchBuilder = new StringBuilder();
-    if(!ObjectUtils.isEmpty(manufacturer)) {
+    if (!ObjectUtils.isEmpty(manufacturer)) {
       searchBuilder.append("sponsor_name:" + manufacturer);
     }
-//    if(!ObjectUtils.isEmpty(brand)) {
-//      searchBuilder.append("+AND+products.brand_name:\"" + brand + "\"");
-//    }
-//    searchBuilder.append("&limit=" + pageSize);
-//    searchBuilder.append("&skip=" + (pageSize * (page - 1)));
+    //    if(!ObjectUtils.isEmpty(brand)) {
+    //      searchBuilder.append("+AND+products.brand_name:\"" + brand + "\"");
+    //    }
+    //    searchBuilder.append("&limit=" + pageSize);
+    //    searchBuilder.append("&skip=" + (pageSize * (page - 1)));
     return openFDAClient.findByManufacturerAndBrand(searchBuilder.toString());
   }
 

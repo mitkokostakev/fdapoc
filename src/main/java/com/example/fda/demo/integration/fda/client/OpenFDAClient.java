@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.*;
 @FeignClient(value = "openfdaclient", url = "${services.openfda.api.url}")
 public interface OpenFDAClient {
 
-  @RequestMapping(path = "/drug/drugsfda.json",
+  @RequestMapping(
+      path = "/drug/drugsfda.json",
       consumes = {MediaType.APPLICATION_JSON_VALUE},
       method = RequestMethod.GET)
   ResponseEntity<OpenFDAResponse> findByManufacturerAndBrand(

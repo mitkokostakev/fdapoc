@@ -15,8 +15,7 @@ public enum DrugRecordApplicationSearchField implements SearchField {
   SUBSTANCE_NAME("substanceName", SearchOperation.EQUAL),
 
   // Non Request searching fields
-  DELETED("deleted", SearchOperation.EQUAL)
-;
+  DELETED("deleted", SearchOperation.EQUAL);
 
   private String jsonName;
   private SearchOperationStrategy searchOperation;
