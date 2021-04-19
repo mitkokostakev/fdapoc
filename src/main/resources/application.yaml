@@ -3,7 +3,7 @@ server:
 
 logbook:
   include:
-    - /v1/api/**
+    - /api/v1/**
     - /actuator/**
   exclude:
     - /actuator/health
@@ -28,6 +28,8 @@ spring:
   output:
     ansi:
       enabled: always
+  http.converters.preferred-json-mapper: gson
+  gson.disable-html-escaping: true
   profiles:
     active: docker
   jackson:
@@ -57,11 +59,18 @@ logging:
         type: ${LOG_LEVEL:INFO}
       zalando:
         logbook: TRACE
+    com:
+      example:
+        fda:
+          demo:
+            integration:
+              fda:
+                OpenFDAClient: DEBUG
 
 services:
   openfda:
     api:
-      url: ${OPENFDA_REST_API_URL:https://api.fda.gov/drug/drugsfda.json}
+      url: ${OPENFDA_REST_API_URL:https://api.fda.gov}
 
 feign:
   client:
@@ -69,11 +78,13 @@ feign:
       default:
         connectTimeout: 30000
         readTimeout: 30000
-        loggerLevel: FULL
+        loggerLevel: full
 ---
 
 spring:
-  profiles: docker
+  config:
+    activate:
+      on-profile: docker
   datasource:
     url: ${JDBC_URL:jdbc:postgresql://database:5432/fda-demo}
     username: "fdauser"
@@ -101,13 +112,15 @@ spring:
 ---
 
 spring:
-  profiles: local
+  config:
+    activate:
+      on-profile: local
 
   ###
   # HikariCP Properties
   ###
   datasource:
-    url: ${JDBC_URL:jdbc:postgresql://localhost:5433/fda-demo}
+    url: ${JDBC_URL:jdbc:postgresql://localhost:5433/postgres}
     type: com.zaxxer.hikari.HikariDataSource
     hikari:
       connection-timeout: 60000
@@ -115,9 +128,9 @@ spring:
       minimum-idle: 30
       idle-timeout: 3000
       poolName: HikariCP
-      jdbcUrl: ${JDBC_URL:jdbc:postgresql://localhost:5433/fda-demo}
-      username: fdauser
-      password: fdauser
+      jdbcUrl: ${JDBC_URL:jdbc:postgresql://localhost:5433/postgres}
+      username: admin
+      password: admin123
       driverClassName: org.postgresql.Driver
     initialization-mode: always
   jpa:
@@ -131,7 +144,9 @@ server:
   friendlyName: Test Server
 
 spring:
-  profiles: test
+  config:
+    activate:
+      on-profile: test
 
   datasource:
     driver-class-name: org.postgresql.Driver

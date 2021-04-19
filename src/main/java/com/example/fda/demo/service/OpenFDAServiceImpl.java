@@ -15,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -27,7 +28,16 @@ public class OpenFDAServiceImpl implements OpenFDAService {
   @Override
   public ResponseEntity<OpenFDAResponse> findSubmittedForApproval(
       String manufacturer, String brand, Integer page, Integer pageSize) {
-    return openFDAClient.findByManufacturerAndBrand(manufacturer, brand);
+    StringBuilder searchBuilder = new StringBuilder();
+    if(!ObjectUtils.isEmpty(manufacturer)) {
+      searchBuilder.append("sponsor_name:" + manufacturer);
+    }
+//    if(!ObjectUtils.isEmpty(brand)) {
+//      searchBuilder.append("+AND+products.brand_name:\"" + brand + "\"");
+//    }
+//    searchBuilder.append("&limit=" + pageSize);
+//    searchBuilder.append("&skip=" + (pageSize * (page - 1)));
+    return openFDAClient.findByManufacturerAndBrand(searchBuilder.toString());
   }
 
   @Override
