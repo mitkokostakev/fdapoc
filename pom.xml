@@ -282,6 +282,8 @@
 									<excludes>
 										<exclude>com.example.fda.demo.model.Greeting</exclude>
 										<exclude>com.example.fda.demo.FDAApplication</exclude>
+										<exclude>com.example.fda.demo.exception.DrugRecordApplicationNotFoundException</exclude>
+										<exclude>com.example.fda.demo.exception.handler.GlobalControllerExceptionHandler</exclude>
 									</excludes>
 									<limits>
 										<limit>

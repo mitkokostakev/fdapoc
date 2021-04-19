@@ -2,6 +2,7 @@ package com.example.fda.demo.service;
 
 import com.example.fda.demo.exception.DrugRecordApplicationNotFoundException;
 import com.example.fda.demo.integration.fda.client.OpenFDAClient;
+import com.example.fda.demo.integration.fda.client.Params;
 import com.example.fda.demo.integration.fda.model.OpenFDAResponse;
 import com.example.fda.demo.model.entity.DrugRecordApplication;
 import com.example.fda.demo.model.mapper.DrugRecordApplicationMapper;
@@ -28,6 +29,15 @@ public class OpenFDAServiceImpl implements OpenFDAService {
   @Override
   public ResponseEntity<OpenFDAResponse> findSubmittedForApproval(
       String manufacturer, String brand, Integer page, Integer pageSize) {
+    Params params = new Params();
+    params.setSearch(buildSearch(manufacturer, brand));
+    params.setLimit(pageSize);
+    params.setSkip(pageSize * (page - 1));
+
+    return openFDAClient.findByManufacturerAndBrand(params);
+  }
+
+  private String buildSearch(String manufacturer, String brand) {
     StringBuilder searchBuilder = new StringBuilder();
     if (!ObjectUtils.isEmpty(manufacturer)) {
       searchBuilder.append("sponsor_name:\"");
@@ -39,9 +49,7 @@ public class OpenFDAServiceImpl implements OpenFDAService {
       searchBuilder.append(brand);
       searchBuilder.append("\"");
     }
-    searchBuilder.append("&limit=" + pageSize);
-    searchBuilder.append("&skip=" + (pageSize * (page - 1)));
-    return openFDAClient.findByManufacturerAndBrand(searchBuilder.toString());
+    return searchBuilder.toString();
   }
 
   @Override
@@ -50,7 +58,8 @@ public class OpenFDAServiceImpl implements OpenFDAService {
   }
 
   @Override
-  public DrugRecordApplication findByQuery(Map<Object, Object> fields, Integer page, Integer size)
+  public DrugRecordApplication findByQuery(
+      Map<Object, Object> fields, Integer pageNumber, Integer size)
       throws DrugRecordApplicationNotFoundException, IllegalAccessException {
 
     DrugRecordApplication drugRecordApplication = new DrugRecordApplication();
@@ -60,10 +69,10 @@ public class OpenFDAServiceImpl implements OpenFDAService {
     Specification<DrugRecordApplication> specification =
         specificationBuilder.buildFrom(drugRecordApplication);
 
-    PageRequest pageRequest = PageRequest.of(page, size);
-    Page<DrugRecordApplication> allPage = repository.findAll(specification, pageRequest);
+    PageRequest pageRequest = PageRequest.of(pageNumber, size);
+    Page<DrugRecordApplication> page = repository.findAll(specification, pageRequest);
 
-    List<DrugRecordApplication> all = allPage.getContent();
+    List<DrugRecordApplication> all = page.getContent();
     if (all.isEmpty()) {
       throw new DrugRecordApplicationNotFoundException();
     }

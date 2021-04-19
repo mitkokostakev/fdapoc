@@ -3,6 +3,8 @@ package com.example.fda.demo;
 import com.example.fda.demo.controller.FDAController;
 import com.example.fda.demo.db.DatabaseIT;
 import com.example.fda.demo.integration.fda.model.OpenFDAResponse;
+import com.example.fda.demo.model.mapper.DrugRecordApplicationMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.Assert;
@@ -27,6 +29,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class FDAApplicationTests extends DatabaseIT {
 
   @Autowired private FDAController fdaController;
+  @Autowired private ObjectMapper objectMapper;
+  @Autowired private DrugRecordApplicationMapper mapper;
 
   @Test
   public void contextLoads() {
