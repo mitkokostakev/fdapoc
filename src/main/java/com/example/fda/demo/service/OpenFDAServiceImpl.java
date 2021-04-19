@@ -34,7 +34,7 @@ public class OpenFDAServiceImpl implements OpenFDAService {
       searchBuilder.append(manufacturer);
       searchBuilder.append("\"");
     }
-    if(!ObjectUtils.isEmpty(brand)) {
+    if (!ObjectUtils.isEmpty(brand)) {
       searchBuilder.append("+AND+products.brand_name:\"");
       searchBuilder.append(brand);
       searchBuilder.append("\"");
