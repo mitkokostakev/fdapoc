@@ -31,9 +31,7 @@ public class FDAController implements OpenFDAAPI {
       String brandName,
       @RequestParam(defaultValue = OpenFDAAPI.DEFAULT_PAGE) Integer page,
       @RequestParam(defaultValue = OpenFDAAPI.DEFAULT_COUNT) Integer pageSize) {
-    return new ResponseEntity(
-        openFDAService.findSubmittedForApproval(manufacturer, brandName, page, pageSize),
-        HttpStatus.OK);
+    return openFDAService.findSubmittedForApproval(manufacturer, brandName, page, pageSize);
   }
 
   @Override
