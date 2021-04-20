@@ -4,8 +4,10 @@ import com.sun.istack.NotNull;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.List;
+import lombok.Builder;
 import lombok.Data;
 
+@Builder
 @Data
 @ApiModel(
     value = "DrugRecordApplicationCreate",
